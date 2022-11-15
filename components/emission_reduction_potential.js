@@ -55,8 +55,8 @@ export default function EmissionRedcutionPotentialComponent() {
 
                 plotHighlightEffect: "fadeout|borderColor=ff0000, borderAlpha=50",
                 interactiveLegend: 0,
-                drawCustomLegendIcon: 1,
-                legendIconSides: 3, legendIconStartAngle: 150,
+                // drawCustomLegendIcon: 1,
+                // legendIconSides: 3, legendIconStartAngle: 150,
                 // xaxisminvalue: "23",
                 // xaxismaxvalue: "95",
                 ynumberprefix: "",
