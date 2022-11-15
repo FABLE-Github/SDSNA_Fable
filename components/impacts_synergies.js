@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic.js";
+import { ArrowDownTrayIcon } from "@heroicons/react/20/solid";
 
 const FC = dynamic(() => import("./fusion_chart.js"), { ssr: false });
 const consts = require("../consts/consts");
@@ -14,23 +15,27 @@ export default function ImpactsAndSynergiesComponent() {
 
     const [chartConfigs, setChartConfigs] = useState({
         type: "scatter",
-        width: "100%",
+        width: "99%",
         height: "100%",
         dataFormat: "JSON",
         containerBackgroundOpacity: "0",
         dataSource: {
             chart: {
-                caption: consts.CAPTION_TEXT_EMISSION_REDUCTION_POTENTIAL,
-                captionFontColor: "#ffffff",
-                xAxisNameFontColor: "#ddd",
+                caption: inout == consts.IN_OUT_OPTION_OUTPUT ? consts.CAPTION_TEXT_TRADE_OFF_SYNERGIES_OUTPUT :
+                    consts.CAPTION_TEXT_TRADE_OFF_SYNERGIES_INPUT,
+                captionFontColor: "#113458",
+                xAxisNameFontColor: "#113458",
+                yAxisMaxValue : 5,
                 // xAxisPosition : "top",
-                xAxisValueFontColor: "#ddd",
+                divLineColor: "#113458",
+               
+                xAxisValueFontColor: "#113458",
 
-                yAxisNameFontColor: "#ddd",
-                yAxisValueFontColor: "#ddd",
-                yAxisName : "Gradient",
-                xAxisPosition : "right",
-                legendItemFontColor: "#ffffff",
+                yAxisNameFontColor: "#113458",
+                yAxisValueFontColor: "#113458",
+                yAxisName: "Gradient",
+                xAxisPosition: "right",
+                legendItemFontColor: "#113458",
                 // regressionLineThickness: 30,
                 // captionFontSize: "18",
 
@@ -45,7 +50,7 @@ export default function ImpactsAndSynergiesComponent() {
                 // defaultcenterlabelColor: "#cccccc",
 
                 labelFontSize: "12",
-                labelFontColor: "#cccccc",
+                labelFontColor: "#113458",
                 // caption: "???",
                 // subcaption: "Los Angeles Topanga",
                 // xaxisname: "Avg Day Temperature",
@@ -56,9 +61,8 @@ export default function ImpactsAndSynergiesComponent() {
                 xnumbersuffix: "",
                 theme: "fusion",
                 legendIconSides: 5,
-                
                 plottooltext:
-                    "<b>$yDataValue</b> worth <b>$seriesNames</b> were sold,<br>when temperature was <b>$xdataValue</b>"
+                    "Gradient Value : <b>$yDataValue</b>"
             },
             categories: [
                 {
@@ -89,7 +93,6 @@ export default function ImpactsAndSynergiesComponent() {
 
     const generateChartData = () => {
         //Filter Data with Select
-
         let data = dataSrc.filter((ele) => {
             return (ele["Country"] === country && ele["Unit"] === unit && ele["Input_Output"] === inout && ele["MitigationOption"] === mitigationOption);
         });
@@ -98,14 +101,16 @@ export default function ImpactsAndSynergiesComponent() {
         let xLabels = new Map();
         let categoryData = [];      // x Axis Label Array
         let key = 1;
+        categoryData.push({ x: key.toString(), label: "" });
         data.map((item) => {
+            key++;
             if (!xLabels.has(item["Input_OutputName"])) {
                 xLabels.set(item["Input_OutputName"], key);
                 categoryData.push({ x: key.toString(), label: item["Input_OutputName"] });
             }
-            key++;
         });
-
+        key++;
+        categoryData.push({ x: key.toString(), label: "" });
         let dataArr = [];
 
         data.map((ele) => {
@@ -119,6 +124,11 @@ export default function ImpactsAndSynergiesComponent() {
             ...chartConfigs, dataSource: {
                 ...chartConfigs.dataSource,
                 categories: [{ category: categoryData }],
+                chart: {
+                    ...chartConfigs.dataSource.chart,
+                    caption: inout == consts.IN_OUT_OPTION_OUTPUT ? consts.CAPTION_TEXT_TRADE_OFF_SYNERGIES_OUTPUT :
+                        consts.CAPTION_TEXT_TRADE_OFF_SYNERGIES_INPUT,
+                },
                 dataset: [
                     { seriesname: "", anchorbgcolor: consts.colors[0], data: dataArr, anchorsides: 2, anchorradius: 5 },
                 ]
@@ -152,80 +162,75 @@ export default function ImpactsAndSynergiesComponent() {
 
     return (
         <>
-            <div className="bg-local text-center grid content-center" style={{ backgroundImage: "url(../fable_bg1.jpg)", minheight: "600px" }}>
-                <div className="grid grid-cols-6 bg-gray-800 bg-opacity-40 rounded-xl p-5 m-12 items-center justify-center">
-                    <div className="col-span-6 flex justify-between">
-                        <label htmlFor="countries" className="flex px-5 text-lg font-medium text-gray-200">Mitigation Name </label>
+            <div className="py-2 px-8">
+                {/* <div className="bg-local text-center grid content-center" style={{ backgroundImage: "url(../fable_bg1.jpg)", minheight: "600px" }}> */}
+                <div className="grid grid-cols-6 bg-[#113458] bg-opacity-10 rounded-xl py-3 px-3 sm:px-5 mt-12 items-center justify-center">
+                    <div className="col-span-6 flex items-center justify-between">
+                        <label htmlFor="countries" className="flex hidden md:block px-5 text-sm font-medium text-[#113458]">{mitigationOption}</label>
                         <div className="flex">
-
                             <div className="flex items-center mx-2.5">
-                                {/* <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-200">Country : </label> */}
-                                <select id="countries" className="bg-gray-900 bg-opacity-20 border border-gray-200 text-gray-200 text-sm rounded-lg focus:text-gray-900 focus:border-gray-900 focus-visible:outline-none block p-2.5 ml-2.5" onChange={countryChange} value={country}>
-                                    <option className="text-gray-900" value={""}>Country</option>
+                                {/* <label htmlFor="countries" className="block mb-2 text-sm font-medium text-[#113458]">Year : </label> */}
+                                <select id="mitigationOptions" className="bg-gray-900 bg-opacity-10 border border-[#113458] text-[#113458] text-sm rounded-lg focus:text-[#113458] focus:border-gray-900 focus-visible:outline-none block p-1.5" onChange={mitigationOptionChange} value={mitigationOption}>
+                                    {/* <option className="text-[#113458]" value={""}>Mitigation.Option</option> */}
                                     {
-                                            consts.COUNTRY_LIST.map((countryItem, idx) => (
-                                                <option className="text-gray-900" key={"country_list" + idx} value={countryItem}>{countryItem}</option>
-                                            ))
-                                        }
+                                        consts.MITIGATION_OPTION_LIST2.map((optionItem, idx) => (
+                                            <option className="text-[#113458]" key={"mi_option" + idx} value={optionItem}>{optionItem}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             <div className="flex items-center mx-2.5">
-                                {/* <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-200">Data Source : </label> */}
-                                <select id="countries" className="bg-gray-900 bg-opacity-20 border border-gray-200 text-gray-200 text-sm rounded-lg focus:text-gray-900 focus:border-gray-900 focus-visible:outline-none block p-2.5 ml-2.5" onChange={unitChange} value={unit}>
-                                    <option className="text-gray-900" value={""}>Unit</option>
+                                {/* <label htmlFor="countries" className="block mb-2 text-sm font-medium text-[#113458]">Country : </label> */}
+                                <select id="countries" className="bg-gray-900 bg-opacity-10 border border-[#113458] text-[#113458] text-sm rounded-lg focus:text-[#113458] focus:border-gray-900 focus-visible:outline-none block p-1.5" onChange={countryChange} value={country}>
+                                    {/* <option className="text-[#113458]" value={""}>Country</option> */}
                                     {
-                                            consts.UNIT_LIST.map((unitItem, idx) => (
-                                                <option className="text-gray-900" key={"unit_list" + idx} value={unitItem}>{unitItem}</option>
-                                            ))
-                                        }
+                                        consts.COUNTRY_LIST.map((countryItem, idx) => (
+                                            <option className="text-[#113458]" key={"country_list" + idx} value={countryItem}>{countryItem}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             <div className="flex items-center mx-2.5">
-                                {/* <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-200">Data Source : </label> */}
-                                <select id="countries" className="bg-gray-900 bg-opacity-20 border border-gray-200 text-gray-200 text-sm rounded-lg focus:text-gray-900 focus:border-gray-900 focus-visible:outline-none block p-2.5 ml-2.5" onChange={inoutChange} value={inout}>
-                                    <option className="text-gray-900" value={""}>Input_Output</option>
+                                {/* <label htmlFor="countries" className="block mb-2 text-sm font-medium text-[#113458]">Data Source : </label> */}
+                                <select id="units" className="bg-gray-900 bg-opacity-10 border border-[#113458] text-[#113458] text-sm rounded-lg focus:text-[#113458] focus:border-gray-900 focus-visible:outline-none block p-1.5" onChange={unitChange} value={unit}>
+                                    {/* <option className="text-[#113458]" value={""}>Unit</option> */}
                                     {
-                                            consts.IN_OUT_OPTION_LIST.map((item, idx) => (
-                                                <option className="text-gray-900" key={"unit_list" + idx} value={item}>{item}</option>
-                                            ))
-                                        }
+                                        consts.UNIT_LIST.map((unitItem, idx) => (
+                                            <option className="text-[#113458]" key={"unit_list" + idx} value={unitItem}>{unitItem}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             <div className="flex items-center mx-2.5">
-                                {/* <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-200">Year : </label> */}
-                                <select id="mitigationOptions" className="bg-gray-900 bg-opacity-20 border border-gray-200 text-gray-200 text-sm rounded-lg focus:text-gray-900 focus:border-gray-900 focus-visible:outline-none block p-2.5 ml-2.5" onChange={mitigationOptionChange} value={mitigationOption}>
-                                    <option className="text-gray-900" value={""}>Mitigation.Option</option>
+                                {/* <label htmlFor="countries" className="block mb-2 text-sm font-medium text-[#113458]">Data Source : </label> */}
+                                <select id="inouts" className="bg-gray-900 bg-opacity-10 border border-[#113458] text-[#113458] text-sm rounded-lg focus:text-[#113458] focus:border-gray-900 focus-visible:outline-none block p-1.5" onChange={inoutChange} value={inout}>
+                                    {/* <option className="text-[#113458]" value={""}>Input_Output</option> */}
                                     {
-                                            consts.MITIGATION_OPTION_LIST2.map((optionItem, idx) => (
-                                                <option className="text-gray-900" key={"mi_option" + idx} value={optionItem}>{optionItem}</option>
-                                            ))
-                                        }
+                                        consts.IN_OUT_OPTION_LIST.map((item, idx) => (
+                                            <option className="text-[#113458]" key={"unit_list" + idx} value={item}>{item}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
-
-                            {/* <div className="flex items-center mx-2.5">
-                                    <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-200">Data Source : </label>
-                                    <select id="countries" className="bg-gray-900 bg-opacity-20 border border-gray-200 text-gray-200 text-sm rounded-lg focus:text-gray-900 focus:border-gray-900 focus-visible:outline-none block p-2.5 ml-2.5" defaultValue="">
-                                        <option className="text-gray-900" value={""}>AR</option>
-                                        <option className="text-gray-900" value={"US"}>Option 1</option>
-                                        <option className="text-gray-900" value={"CA"}>Option 2</option>
-                                        <option className="text-gray-900" value={"FR"}>Option 3</option>
-                                    </select>
-                                </div> */}
                         </div>
-                        <div className="flex items-center mx-2.5 float-right">
-                            {/* <button type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 shadow-lg shadow-red-500/50 font-medium rounded-lg text-sm px-5 py-2.5 ml-2.5 text-center">Download Data</button> */}
-                            {/* <button type="button" class="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  shadow-lg shadow-pink-500/50 font-medium rounded-lg text-sm px-5 py-2.5 ml-2.5 text-center">Download Data</button> */}
-                            {/* <button type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 shadow-lg shadow-purple-500/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center ml-2.5">Download Data</button> */}
-                            <button type="button" className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 shadow-lg shadow-green-500/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center ml-2.5" onClick={downloadData}>Download Data</button>
+                        <div className="flex items-center mx-2.5">
+                            <button type="button" className="text-[#113458] bg-[#f4cc13] hover:text-white focus:ring-4 focus:ring-yellow-200 font-medium rounded-lg text-xs sm:text-sm px-5 py-2.5 text-center" onClick={downloadData}>
+                                <span className="hidden sm:block">Download Data</span>
+                                <span className="sm:hidden">
+                                    <ArrowDownTrayIcon
+                                        className="h-5 w-5 text-[#113458] hover:text-white"
+                                        aria-hidden="true"
+                                    />
+                                </span>
+                            </button>
                         </div>
                     </div>
                     {/* <p className="text-xl font-bold">Impacts & Synergies</p> */}
-                    <div className="col-span-3 m-3 bg-gray-900 bg-opacity-20 rounded-md text-gray-200 flex text-center p-3 " style={{ minHeight: "500px" }}>
-                        <img src="avatar2.png" className="h-40 bg-white bg-opacity-20 rounded-md m-3" />
+                    <div className="col-span-6 sm:col-span-3 bg-gray-900 bg-opacity-10 rounded-md text-[#113458] justify-items-center grid p-3 my-3" style={{ minHeight: "500px" }}>
+                        <img src="avatar2.png" className="h-40 bg-gray-900 bg-opacity-10 rounded-md m-3" />
                         <div className="my-3 text-3xl">Some Text Here!</div>
                     </div>
-                    <div className="grid" style={{ minHeight: `${400}px`, minWidth: "600px" }}>
+                    <div className="grid col-span-6 sm:col-span-3" style={{ minHeight: `${400}px`}}>
                         <FC chartConfigs={chartConfigs}></FC>
                     </div>
                 </div>
