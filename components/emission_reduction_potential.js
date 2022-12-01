@@ -7,7 +7,7 @@ import { ArrowDownTrayIcon } from "@heroicons/react/20/solid";
 
 import { exportToCSV } from "../utils/exportCSV";
 import ModalComponent from "./modal_component";
-const dataSrc = require("../consts/221129_MitigationPotential.json");
+const dataSrc = require("../consts/221201_MitigationPotential.json");
 const consts = require("../consts/consts");
 
 const FC = dynamic(() => import("./fusion_chart.js"), { ssr: false });
@@ -99,6 +99,14 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                 yAxisNameFontColor: "#113458",
                 yAxisValueFontColor: "#113458",
                 legendItemFontColor: "#113458",
+
+                "legendIconBgColor": "#ff0000",
+                "legendIconAlpha": "50",
+                "legendIconBgAlpha": "30",
+                "legendIconBorderColor": "#123456",
+                "legendIconBorderThickness": "3",
+
+
                 yAxisMaxValue: "6000",
                 yAxisMinValue: "0",
                 bgColor: "#000000",
@@ -134,8 +142,8 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
             ]
         }
     });
-    const generateChartData = () => {
 
+    const getAFOLUSectorOptionsList = () => {
         // set data for MitigationOption(AFOLU Sector) SelectBox
         let afoluSectorArr = [];
         afoluSectorArr = dataSrc.map((ele) => {
@@ -145,33 +153,55 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
             [],
         );
         setAFOLUSectorList(afoluSectorArr);
+    }
 
-        // set data for Unit SelectBox
-        let unitArr = [];
-        unitArr = dataSrc.map((ele) => {
-            return ele["Unit"];
-        }).reduce(
-            (arr, item) => (arr.includes(item) ? arr : [...arr, item]),
-            [],
-        );
-        setUnitList(unitArr);
-
+    const getFarmingSystemOptionsList = () => {
         // set data for Unit SelectBox
         let farmingSystemArr = [];
-        farmingSystemArr = dataSrc.map((ele) => {
+        farmingSystemArr = dataSrc.filter((ele) => {
+            return (ele["AFOLU_Sector"] === AFOLUSector)
+        }).map((ele) => {
             return ele["FarmingSystem"];
         }).reduce(
             (arr, item) => (arr.includes(item) ? arr : [...arr, item]),
             [],
         );
+        setFarmingSystem(farmingSystemArr[0]);
         setFarmingSystemList(farmingSystemArr);
+    }
 
+    const getUnitOptionsList = () => {
+        // set data for Unit SelectBox
+        let unitArr = [];
+        unitArr = dataSrc.filter((ele) => {
+            return (ele["AFOLU_Sector"] === AFOLUSector && ele["FarmingSystem"] === farmingSystem)
+        }).map((ele) => {
+            if (ele["AFOLU_Sector"] === AFOLUSector) {
+                return ele["Unit"];
+            }
+        }).reduce(
+            (arr, item) => (arr.includes(item) ? arr : [...arr, item]),
+            [],
+        );
+        setUnit(unitArr[0]);
+        setUnitList(unitArr);
+    }
+
+    useEffect(() => {
+        getFarmingSystemOptionsList();
+    }, [AFOLUSector]);
+
+    useEffect(() => {
+        getUnitOptionsList();
+    }, [AFOLUSector, farmingSystem]);
+
+    const generateChartData = () => {
+        getAFOLUSectorOptionsList();
         // filter Data for Chart
         let data = dataSrc.filter((ele) => {
             return (ele["Party"] === country && ele["AFOLU_Sector"] === AFOLUSector && ele["FarmingSystem"] === farmingSystem && ele["Unit"] === unit);
         });
         setExportData(data);
-
 
         // let xLabels1 = new Map();
         let xLabels2 = new Map();
@@ -207,6 +237,7 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
         // let dataArrForMedian1 = [];
         let dataArrForMedian2 = [];
         let dataArrForAverage = [];
+        let dataArrForHistorical = [];
 
         let yMax = 0;
         if (data.length > 0) {
@@ -217,7 +248,7 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                 let xValue = categoryData2.find((e) => {
                     return e["label"] == ele["DataSource"];
                 })["x"];
-                dataArrForMedian2.push({ x: xValue, y: ele["Average"] });
+                dataArrForHistorical.push({ x: xValue, y: ele["Historical"] });
             } else {
                 let xValue = categoryData2.find((e) => {
                     return e["label"] == ele["MitigationOption"];
@@ -260,10 +291,11 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                 },
                 categories: [{ category: categoryData2 }],
                 dataset: [
-                    { seriesname: "Max", anchorbgcolor: consts.colors[0], data: dataArrForMax, anchorstartangle: 270, anchorsides: 3, anchorradius: 8 },
-                    { seriesname: "Min", anchorbgcolor: consts.colors[1], data: dataArrForMin, anchorsides: 3, anchorradius: 8 },
-                    { seriesname: "Average", anchorbgcolor: consts.colors[3], data: dataArrForAverage, anchorsides: 2, anchorradius: 6 },
-                    { seriesname: "Median", anchorbgcolor: consts.colors[2], data: dataArrForMedian2, anchorsides: 4, anchorradius: 5 }
+                    { seriesname: "Max", anchorbgcolor: consts.colors[0], data: dataArrForMax, anchorstartangle: 270, anchorsides: 3, anchorradius: 8, legendIconAlpha: 100 },
+                    { seriesname: "Min", anchorbgcolor: consts.colors[1], data: dataArrForMin, anchorsides: 3, anchorradius: 8, legendIconAlpha: 100 },
+                    { seriesname: "Average", anchorbgcolor: consts.colors[3], data: dataArrForAverage, anchorsides: 2, anchorradius: 6, legendIconAlpha: 100 },
+                    { seriesname: "Median", anchorbgcolor: consts.colors[2], data: dataArrForMedian2, anchorsides: 4, anchorradius: 5, legendIconAlpha: 100 },
+                    { seriesname: "Historical", anchorbgcolor: consts.colors[4], data: dataArrForHistorical, anchorsides: 5, anchorradius: 5, legendIconAlpha: 100 }
                 ],
             }
         });
@@ -419,9 +451,11 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                         </div>
                     </div>
                     <div className="grid col-span-12 xl:col-span-5 bg-gradient-to-b from-[#11345822] rounded-md text-[#113458] p-3 mb-3" style={{ minHeight: `${400}px` }}>
-                        {exportData.length ? exportData[0]["DescriptionText"] : <div className="text-[#11345822] text-center grid items-center"><span>
-                            <i><b>No Data to Display</b></i></span>
-                        </div>}
+                        {exportData.length ?
+                            exportData[0]["DescriptionText"] :
+                            <div className="text-[#11345822] text-center grid items-center">
+                                <span><i><b>No Data to Display</b></i></span>
+                            </div>}
                     </div>
 
                     {(exportData && exportData.length) ? <div className="col-span-12 xl:col-span-7 xl:ml-3">
