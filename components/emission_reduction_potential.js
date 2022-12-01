@@ -173,21 +173,21 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
         setExportData(data);
 
 
-        let xLabels1 = new Map();
+        // let xLabels1 = new Map();
         let xLabels2 = new Map();
-        let categoryData1 = [];      // x Axis Label Array
+        // let categoryData1 = [];      // x Axis Label Array
         let categoryData2 = [];      // x Axis Label Array
-        let key1 = 1;
+        // let key1 = 1;
         let key2 = 1;
-        categoryData1.push({ x: (key1 * 20).toString(), label: "" });
-        categoryData2.push({ x: (key1 * 20).toString(), label: "" });
+        // categoryData1.push({ x: (key1 * 20).toString(), label: "" });
+        categoryData2.push({ x: (key2 * 20).toString(), label: "" });
 
         data.map((item) => {
             if (item["DataSource"] === consts.DATA_SOURCE_FAO || item["DataSource"] === consts.DATA_SOURCE_IPCC) {
-                if (!xLabels1.has(item["DataSource"])) {
-                    key1++;
-                    xLabels1.set(item["DataSource"], key1);
-                    categoryData1.push({ x: (key1 * 20).toString(), label: item["DataSource"] });
+                if (!xLabels2.has(item["DataSource"])) {
+                    key2++;
+                    xLabels2.set(item["DataSource"], key2);
+                    categoryData2.push({ x: (key2 * 20).toString(), label: item["DataSource"] });
                 }
             } else {
                 if (!xLabels2.has(item["MitigationOption"])) {
@@ -197,14 +197,14 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                 }
             }
         });
-        key1++;
+        // key1++;
         key2++;
-        categoryData1.push({ x: (key1 * 20).toString(), label: "" });
+        // categoryData1.push({ x: (key1 * 20).toString(), label: "" });
         categoryData2.push({ x: (key2 * 20).toString(), label: "" });
 
         let dataArrForMax = [];
         let dataArrForMin = [];
-        let dataArrForMedian1 = [];
+        // let dataArrForMedian1 = [];
         let dataArrForMedian2 = [];
         let dataArrForAverage = [];
 
@@ -214,10 +214,10 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
         }
         data.map((ele) => {
             if (ele["DataSource"] === consts.DATA_SOURCE_FAO || ele["DataSource"] === consts.DATA_SOURCE_IPCC) {
-                let xValue = categoryData1.find((e) => {
+                let xValue = categoryData2.find((e) => {
                     return e["label"] == ele["DataSource"];
                 })["x"];
-                dataArrForMedian1.push({ x: xValue, y: ele["Average"] });
+                dataArrForMedian2.push({ x: xValue, y: ele["Average"] });
             } else {
                 let xValue = categoryData2.find((e) => {
                     return e["label"] == ele["MitigationOption"];
@@ -237,19 +237,19 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                 }
             }
         });
-        setChartConfigs1({
-            ...chartConfigs1, dataSource: {
-                ...chartConfigs1.dataSource,
-                chart: {
-                    ...chartConfigs1.dataSource.chart,
-                    yAxisMaxValue: yMax,
-                },
-                categories: [{ category: categoryData1 }],
-                dataset: [
-                    { seriesname: "Average", anchorbgcolor: "#666666", data: dataArrForMedian1, anchorsides: 4, anchorstartangle: 45, anchorradius: 5 }
-                ],
-            }
-        });
+        // setChartConfigs1({
+        //     ...chartConfigs1, dataSource: {
+        //         ...chartConfigs1.dataSource,
+        //         chart: {
+        //             ...chartConfigs1.dataSource.chart,
+        //             yAxisMaxValue: yMax,
+        //         },
+        //         categories: [{ category: categoryData1 }],
+        //         dataset: [
+        //             { seriesname: "Average", anchorbgcolor: "#666666", data: dataArrForMedian1, anchorsides: 4, anchorstartangle: 45, anchorradius: 5 }
+        //         ],
+        //     }
+        // });
 
         setChartConfigs2({
             ...chartConfigs2, dataSource: {
@@ -418,14 +418,14 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="grid col-span-12 xl:col-span-4 bg-gradient-to-b from-[#11345822] rounded-md text-[#113458] p-3 mb-3" style={{ minHeight: `${400}px` }}>
+                    <div className="grid col-span-12 xl:col-span-5 bg-gradient-to-b from-[#11345822] rounded-md text-[#113458] p-3 mb-3" style={{ minHeight: `${400}px` }}>
                         {exportData.length ? exportData[0]["DescriptionText"] : <div className="text-[#11345822] text-center grid items-center"><span>
                             <i><b>No Data to Display</b></i></span>
                         </div>}
                     </div>
 
-                    {(exportData && exportData.length) ? <div className="col-span-12 xl:col-span-8 grid grid-cols-12 xl:ml-3">
-                        <div className="bg-gradient-to-b from-[#11345822] rounded-md col-span-12 md:col-span-4">
+                    {(exportData && exportData.length) ? <div className="col-span-12 xl:col-span-7 xl:ml-3">
+                        {/* <div className="bg-gradient-to-b from-[#11345822] rounded-md col-span-12 md:col-span-4">
                             {
                                 chartConfigs1.dataSource.dataset[0].data.length > 0 ?
                                     <div className="grid" style={{ minHeight: `${400}px` }}>
@@ -435,14 +435,12 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                                         <i><b>No Data to Display</b></i></span>
                                     </div>
                             }
-                        </div>
-                        <div className="bg-gradient-to-b from-[#11345822] rounded-md col-span-12 md:col-span-8 md:ml-3">
-                            <div className="grid" style={{ minHeight: `${400}px` }}>
-                                <FC chartConfigs={chartConfigs2}></FC>
-                            </div>
+                        </div> */}
+                        <div className="grid" style={{ minHeight: `${400}px` }}>
+                            <FC chartConfigs={chartConfigs2}></FC>
                         </div>
                     </div> :
-                        <div className="col-span-12 xl:col-span-8 grid bg-gradient-to-b from-[#11345822] rounded-md text-center content-center text-[#11345822] xl:ml-3 mb-3" style={{ minHeight: `${200}px` }}>
+                        <div className="col-span-12 xl:col-span-7 grid bg-gradient-to-b from-[#11345822] rounded-md text-center content-center text-[#11345822] xl:ml-3 mb-3" style={{ minHeight: `${200}px` }}>
                             <i>No Reduction Potential for <b>{country}</b></i>
                         </div>
                     }
