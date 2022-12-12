@@ -36,7 +36,7 @@ const HomeComponent = ({ country }) => {
             chart: {
                 baseFont:"Arial",
                 caption: "",
-                pieRadius: "110",
+                pieRadius: "120",
                 captionFontColor: "#113458",
                 captionFontSize: "18",
                 captionFontBold: "0",
@@ -64,6 +64,8 @@ const HomeComponent = ({ country }) => {
                 startingAngle: "30",
                 enableSlicing: "0",
                 decimals: "1",
+                // showLabels: "0",
+                // showValues: "0",
                 theme: "fusion"
             },
             data: []
