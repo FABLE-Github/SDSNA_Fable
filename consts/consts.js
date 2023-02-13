@@ -7,7 +7,7 @@ export const CAPTION_TEXT_TRADE_OFF_SYNERGIES_INPUT =
   "Scaling mitigation relationship with non-GHG inputs";
 export const colors = [
   "#7700BF",
-  "#9F00FF",
+  "#D3A9E6",
   "#FF0000",
   "#FFCE00",
   "#000000",

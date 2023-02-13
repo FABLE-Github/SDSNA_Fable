@@ -161,7 +161,8 @@ const HomeComponent = ({ country }) => {
         let captionStr = `<b>${country}'s Total GHG emissions in ${year}</b>{br}`;
         if (data.length > 0) {
             captionStr += data[0]["TotalEmissionsMtCO2e"] + ` Mt CO2e`;
-            subCaptionStr = "{br}" + data[0]["TotalEmissionsCapitatCO2e_cap"] + " t CO2e/cap";
+            subCaptionStr = //"{br}"
+             + data[0]["TotalEmissionsCapitatCO2e_cap"] + " t CO2e/cap";
         }
 
         setChartConfigs({
@@ -296,7 +297,7 @@ const HomeComponent = ({ country }) => {
             <div className="py-2 px-8">
                 <div className="bg-[#113458] bg-opacity-10 rounded-xl py-3 px-3 sm:px-5 grid items-center" >
                     <div className="mb-5">
-                        <label htmlFor="countries" className="hidden md:block text-2xl font-medium text-[#113458]">
+                        <label htmlFor="countries" className="hidden md:block text-2xl font-bold text-[#113458]">
                             {consts.MODAL_TITLE_OVERVIEW}
                         </label>
                     </div>
@@ -304,7 +305,7 @@ const HomeComponent = ({ country }) => {
                         <div className="flex">
                             <div className="flex items-center mr-2.5">
                                 <label htmlFor="countries" className="text-sm font-medium text-[#113458] mr-2.5">Year : </label>
-                                <select id="countries" className="bg-[#113458] bg-opacity-10 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" value={year} onChange={yearChange}>
+                                <select id="countries" className="bg-[#FFFFFF] bg-opacity-100 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" value={year} onChange={yearChange}>
                                     {
                                         yearList.map((item, idx) => (
                                             <option className="text-[#113458]" key={"year_option" + idx} value={item}>{item}</option>
@@ -329,7 +330,7 @@ const HomeComponent = ({ country }) => {
 
                                 <ModalComponent title={consts.MODAL_TITLE_GWP} content={gwpModalContent} isModalOpen={isGWPModalOpen} closeModal={closeGWPModal} />
                                 <label htmlFor="countries" className="text-sm font-medium text-[#113458] mr-2.5">GWP : </label>
-                                <select id="countries" className="bg-[#113458] bg-opacity-10 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" value={gwp} onChange={gwpChange}>
+                                <select id="countries" className="bg-[#FFFFFF] bg-opacity-100 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" value={gwp} onChange={gwpChange}>
                                     {
                                         gwpList.map((arItem, idx) => (
                                             <option className="text-[#113458]" key={"ar_option" + idx} value={arItem}>{arItem}</option>
@@ -341,7 +342,7 @@ const HomeComponent = ({ country }) => {
                         <div className="flex">
                             <div className="items-center mx-2.5 hidden lg:flex">
                                 <label htmlFor="countries" className="text-sm font-medium text-[#113458] mr-2.5">Data Source : </label>
-                                <select id="countries" className="bg-[#113458] bg-opacity-10 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" value={dataSource} onChange={dataSourceChange}>
+                                <select id="countries" className="bg-[#FFFFFF] bg-opacity-100 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" value={dataSource} onChange={dataSourceChange}>
                                     {
                                         dataSourceList.map((dataSrcItem, idx) => (
                                             <option className="text-[#113458]" key={"dataSrc_option" + idx} value={dataSrcItem}>{dataSrcItem}</option>
@@ -380,7 +381,7 @@ const HomeComponent = ({ country }) => {
                     <div className="grid grid-cols-12" style={{ minHeight: "400px" }}>
                         <div className="grid col-span-12 lg:col-span-4 bg-gradient-to-b lg:bg-gradient-to-r from-[#11345822] rounded-md text-[#113458] leading-loose p-3 my-3">
                             {exportData.length ?
-                                <div>{exportData[0]["TextParagraph1"]}<br /><br />{exportData[0]["TextParagraph2"]}</div> :
+                                <div><br /><br />{exportData[0]["TextParagraph1"]}<br /><br />{exportData[0]["TextParagraph2"]}</div> :
                                 <span className="text-[#11345822]"><i>No Data to Display</i></span>}
                         </div>
                         <div className="hidden md:block lg:hidden col-span-12 justify-self-end">

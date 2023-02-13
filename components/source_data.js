@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 const dataSrc = require("../consts/221205_CleanSource.json")
-const SourceDataComponent = ({ AFOLUSector, farmingSystem, mitigationOption }) => {
+const SourceDataComponent = ({ AFOLUSector, farmingSystem, mitigationOption, Mitig_Option_FullName}) => {
 
     const [data, setData] = useState([]);
 
     const filterData = () => {
         setData(dataSrc.filter((ele) => {
-            return (ele["FarmingSystem"] === farmingSystem && ele["Mitig_Option"] === mitigationOption)
+            return (ele["FarmingSystem"] === farmingSystem && ele["MitigationOption"] === mitigationOption)
         }));
     }
 
@@ -18,7 +18,7 @@ const SourceDataComponent = ({ AFOLUSector, farmingSystem, mitigationOption }) =
         <>
             <div className="grid col-span-6 md:col-span-3 mx-3">
                 <div className="mt-3">
-                    <label htmlFor="countries" className="mx-2 text-2xl font-medium text-[#113458]">
+                    <label htmlFor="countries" className="mx-2 text-2xl font-bold text-[#113458]">
                         Source Data for {mitigationOption}
                     </label>
                 </div>
@@ -27,7 +27,7 @@ const SourceDataComponent = ({ AFOLUSector, farmingSystem, mitigationOption }) =
                         {(data.length > 0) ?
                             <div className="relative rounded-t-xl mt-5">
                                 <table className="w-full text-sm text-center text-[#113458] rounded-t-sm">
-                                    <thead className="text-xs text-white uppercase bg-[#11345877]">
+                                    <thead className="text-xs text-white uppercase bg-[#113458]">
                                         <tr className="grid grid-cols-5">
                                             <th scope="col" className="py-3 md:px-6 col-span-1 px-1">Author</th>
                                             <th scope="col" className="py-3 md:px-6 col-span-1 px-1">Title</th>

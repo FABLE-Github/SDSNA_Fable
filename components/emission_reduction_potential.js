@@ -191,7 +191,7 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                     dataArrForMax.push({ x: xValue, y: ele["Max"], color: "#333333" });
                 }
                 if (ele["Min"]) {
-                    dataArrForMin.push({ x: xValue, y: ele["Min"], color: "#D3A9E6" });
+                    dataArrForMin.push({ x: xValue, y: ele["Min"], color: "#222222" });
                 }
                 if (ele["Median"]) {
                     dataArrForMedian.push({ x: xValue, y: ele["Median"], color: "#111111" });
@@ -324,7 +324,7 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
         <>
             <section id="emission_reduction_potential">
                 <div className="mt-10 px-5 py-3">
-                    <label htmlFor="countries" className="text-2xl font-medium text-[#113458]">
+                    <label htmlFor="countries" className="text-2xl font-bold text-[#113458]">
                         {consts.MODAL_TITLE_MITIGATION_POTENTIAL}
                     </label>
                 </div>
@@ -332,7 +332,7 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                     <div className="flex col-span-12 mb-2.5 justify-between">
                         <div className="flex items-center ">
                             <label htmlFor="countries" className="hidden sm:block text-xs md:text-sm font-medium text-[#113458] mr-2.5">AFOLU Sector: </label>
-                            <select id="mitigationOptions" className="bg-[#113458] bg-opacity-10 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" onChange={afoluSectorOptionChange} value={AFOLUSector}>
+                            <select id="mitigationOptions" className="bg-[#FFFFFF] bg-opacity-100 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" onChange={afoluSectorOptionChange} value={AFOLUSector}>
                                 {
                                     AFOLUSectorList.map((optionItem, idx) => (
                                         <option className="text-[#113458]" key={"mi_option" + idx} value={optionItem}>{optionItem}</option>
@@ -341,7 +341,7 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                             </select>
                             <div className="flex items-center ml-2.5">
                                 <label htmlFor="countries" className="hidden sm:block text-xs md:text-sm font-medium text-[#113458] mr-2.5">Farming System: </label>
-                                <select id="farmingSystemOptions" className="bg-[#113458] bg-opacity-10 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" onChange={farmingSystemChange} value={farmingSystem}>
+                                <select id="farmingSystemOptions" className="bg-[#FFFFFF] bg-opacity-100 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" onChange={farmingSystemChange} value={farmingSystem}>
                                     {
                                         farmingSystemList.map((optionItem, idx) => (
                                             <option className="text-[#113458]" key={"fs_option" + idx} value={optionItem}>{optionItem}</option>
@@ -359,7 +359,7 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
 
                                 <div className="flex items-center">
                                     <label htmlFor="countries" className="hidden sm:block text-xs md:text-sm font-medium text-[#113458] mr-2.5">Unit : </label>
-                                    <select id="countries" className="bg-[#113458] bg-opacity-10 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" onChange={unitChange} value={unit}>
+                                    <select id="countries" className="bg-[#FFFFFF] bg-opacity-100 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-[#113458] focus-visible:outline-none block p-1.5" onChange={unitChange} value={unit}>
                                         {
                                             unitList.map((unitItem, idx) => (
                                                 <option className="text-[#113458]" key={"unit_option" + idx} value={unitItem}>{unitItem}</option>
@@ -398,7 +398,7 @@ const EmissionRedcutionPotentialComponent = ({ country }) => {
                     </div>
                     <div className="grid col-span-12 xl:col-span-5 bg-gradient-to-b from-[#11345822] rounded-md text-[#113458] p-3 mb-3" style={{ minHeight: `${400}px` }}>
                         {exportData.length ?
-                            exportData[0]["DescriptionText"] :
+                            <div><br /><br />{exportData[0]["TextParagraph1"]}<br /><br />{exportData[0]["TextParagraph2"]}</div> :
                             <div className="text-[#11345822] text-center grid items-center">
                                 <span><i><b>No Data to Display</b></i></span>
                             </div>}

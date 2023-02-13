@@ -122,7 +122,7 @@ const ImpactsAndSynergiesComponent = ({ country, AFOLUSector, farmingSystem }) =
     const modalContent = <>
         <div className="mt-5 text-[#113458]">
             <table className="w-full text-sm text-center text-[#113458] rounded-t-sm">
-                <thead className="text-xs text-white uppercase bg-[#11345877] ">
+                <thead className="text-xs text-white uppercase bg-[#113458]">
                     <tr>
                         <th scope="col" className="py-3 px-6">{consts.MODAL_TABLE_HEADER_MAGNITUDE}</th>
                         <th scope="col" className="py-3 px-6">{consts.MODAL_TABLE_HEADER_SYMBOL}</th>
@@ -174,8 +174,8 @@ const ImpactsAndSynergiesComponent = ({ country, AFOLUSector, farmingSystem }) =
 
     return (
         <>
-            <div className="mt-10 px-5 py-3">
-                <label htmlFor="countries" className="text-2xl font-medium text-[#113458]">
+            <div className="mt-10 px-5 py-3 ">
+                <label htmlFor="countries" className="text-2xl font-bold text-[#113458]">
                     {consts.MODAL_TITLE_TRADE_OFFS}
                 </label>
             </div>
@@ -183,7 +183,7 @@ const ImpactsAndSynergiesComponent = ({ country, AFOLUSector, farmingSystem }) =
                 <div className="col-span-6 flex justify-between">
                     <div className="flex items-center">
                         <label htmlFor="countries" className="flex hidden md:block mr-2.5 text-sm font-medium text-[#113458]">Mitigation Option: </label>
-                        <select id="mitigationOptions" className="bg-gray-900 bg-opacity-10 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-gray-900 focus-visible:outline-none block p-1.5" onChange={mitigationOptionChange} value={mitigationOption}>
+                        <select id="mitigationOptions" className="bg-[#FFFFFF] bg-opacity-100 border border-[#113458] text-[#113458] text-xs sm:text-sm rounded-lg focus:text-[#113458] focus:border-gray-900 focus-visible:outline-none block p-1.5" onChange={mitigationOptionChange} value={mitigationOption}>
                             {
                                 mitigationOptionList.length === 0 ?
                                     <option value={"No Option Data"}>No Option Data</option> : ""
@@ -226,7 +226,7 @@ const ImpactsAndSynergiesComponent = ({ country, AFOLUSector, farmingSystem }) =
                     {/* <img src="avatar2.png" className="h-40 bg-gray-900 bg-opacity-10 rounded-md m-3" /> */}
                     
                     {exportData.length ?
-                            exportData[0]["TextDescription"] :
+                            <div><br /><br />{exportData[0]["TextDescription"]}</div>:
                             <div className="text-[#11345822] text-center grid items-center">
                                 <span><i><b>No Data to Display</b></i></span>
                             </div>}
@@ -237,7 +237,7 @@ const ImpactsAndSynergiesComponent = ({ country, AFOLUSector, farmingSystem }) =
                         <>
                             <div className="relative rounded-t-xl">
                                 <table className="w-full text-sm text-center text-[#113458] rounded-t-sm">
-                                    <thead className="text-xs text-white uppercase bg-[#11345877] ">
+                                    <thead className="text-xs text-white uppercase bg-[#113458] ">
                                         <tr>
                                             <th scope="col" className="py-3 px-1">{consts.TEXT_NON_GHG_INDICATOR}</th>
                                             <th scope="col" className="py-3 px-1">{consts.TEXT_MAGNITUDE}</th>

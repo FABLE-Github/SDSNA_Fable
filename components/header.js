@@ -14,7 +14,7 @@ const Header = ({}) => {
         <div className="text-xs sm:text-md md:text-lg col-span-1 pl-2 flex items-center">
           <a href="/">
             {/* <img src="/logo_white.png" style={{ height: "45px" }} /> */}
-            <h4 className="text-white text-center"><b>Mitigation Option <br></br>Catalogue</b></h4>
+            <h4 className="text-white text-center"><b>Mitigation Option Catalogue</b></h4>
           </a>
         </div>
         <div className="md:hidden col-start-4 inline-flex justify-end">
